@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PolitiFact vs Grok</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <header>
+      <h1>PolitiFact vs Grok Fact Checks</h1>
+      <div class="controls">
+        <input id="search" type="text" placeholder="Search claim text..." />
+        <button id="refresh">Refresh</button>
+      </div>
+    </header>
+
+    <main>
+      <div id="status">Loading fact checks...</div>
+      <div id="cards" class="cards"></div>
+      <div class="footer-actions">
+        <button id="load-more" class="hidden">Load more</button>
+      </div>
+    </main>
+
+    <template id="card-template">
+      <article class="card">
+        <div class="card-top">
+          <h2 class="claim"></h2>
+          <div class="card-actions">
+            <button class="copy-link-btn" type="button">Copy link</button>
+            <a class="source-link" target="_blank" rel="noopener noreferrer">Open source</a>
+          </div>
+        </div>
+        <div class="meta"></div>
+        <section class="compare-grid">
+          <div>
+            <h3>PolitiFact</h3>
+            <div class="politifact-verdict"></div>
+            <pre class="politifact-text"></pre>
+          </div>
+          <div>
+            <h3 class="grok-title">Grok</h3>
+            <div class="grok-verdict"></div>
+            <pre class="grok-text"></pre>
+          </div>
+        </section>
+      </article>
+    </template>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+  </html>
