@@ -99,3 +99,19 @@ The UI loads paired `raw/` and `grok/` records and renders:
 - PolitiFact raw fact-check text and verdict
 - Grok fact-check response
 - source link and timestamps
+
+## Deploy on Render
+
+Use these settings for a Python web service:
+
+- Build command: `pip install -r requirements.txt`
+- Start command: `gunicorn ui.wsgi:app --bind 0.0.0.0:$PORT --workers 2 --threads 4 --timeout 120`
+
+Required env vars on Render (S3 mode):
+
+- `STORAGE_BACKEND=s3`
+- `S3_BUCKET=<your-bucket>`
+- `S3_PREFIX=politifact`
+- `AWS_REGION=<your-region>`
+- `AWS_ACCESS_KEY_ID=<key>`
+- `AWS_SECRET_ACCESS_KEY=<secret>`
