@@ -1,0 +1,45 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">PolitiGrok social preview</title>
+  <desc id="desc">PolitiGrok compares PolitiFact and Grok fact checks side by side.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1220"/>
+      <stop offset="1" stop-color="#1F2A44"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(250 120) rotate(39.5) scale(500 340)">
+      <stop stop-color="#3B82F6" stop-opacity="0.42"/>
+      <stop offset="1" stop-color="#3B82F6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1020 560) rotate(-136) scale(520 380)">
+      <stop stop-color="#22D3EE" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#22D3EE" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glowA)"/>
+  <rect width="1200" height="630" fill="url(#glowB)"/>
+
+  <g opacity="0.18" stroke="#93C5FD" stroke-width="1.5">
+    <path d="M0 515L1200 155"/>
+    <path d="M0 585L1200 225"/>
+    <path d="M0 445L1200 85"/>
+  </g>
+
+  <rect x="72" y="70" width="180" height="44" rx="22" fill="#111B2E" stroke="#60A5FA"/>
+  <text x="162" y="99" text-anchor="middle" fill="#BFDBFE" font-size="20" font-family="Inter, Arial, sans-serif" font-weight="600">PolitiGrok</text>
+
+  <text x="72" y="262" fill="#F8FAFC" font-size="92" font-family="Inter, Arial, sans-serif" font-weight="800" letter-spacing="-1.6">PolitiGrok</text>
+  <text x="72" y="334" fill="#E2E8F0" font-size="42" font-family="Inter, Arial, sans-serif" font-weight="500">Compare PolitiFact and Grok Fact Checks</text>
+  <text x="72" y="392" fill="#CBD5E1" font-size="30" font-family="Inter, Arial, sans-serif" font-weight="400">AI + journalism, side by side</text>
+
+  <g transform="translate(72 452)">
+    <rect width="510" height="116" rx="18" fill="#0F1A2F" stroke="#334155"/>
+    <text x="28" y="44" fill="#93C5FD" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="600">PolitiFact</text>
+    <text x="28" y="85" fill="#E2E8F0" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="700">Source Verdict</text>
+    <text x="290" y="44" fill="#67E8F9" font-size="24" font-family="Inter, Arial, sans-serif" font-weight="600">Grok</text>
+    <text x="290" y="85" fill="#E2E8F0" font-size="28" font-family="Inter, Arial, sans-serif" font-weight="700">AI Analysis</text>
+    <line x1="255" y1="20" x2="255" y2="96" stroke="#334155" stroke-width="2"/>
+  </g>
+</svg>

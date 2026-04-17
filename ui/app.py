@@ -3,11 +3,12 @@ import argparse
 import os
 import re
 import sys
+from urllib.parse import quote_plus
 from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, url_for
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 from storage_backend import StorageBackend, choose_mode
@@ -31,6 +32,58 @@ def create_app(
         region=region,
         local_dir=local_dir,
     )
+
+    def truncate_text(value: str | None, max_length: int = 160) -> str:
+        if not value:
+            return ""
+        normalized = re.sub(r"\s+", " ", str(value)).strip()
+        if len(normalized) <= max_length:
+            return normalized
+        return normalized[: max_length - 1].rstrip() + "…"
+
+    def build_fact_metadata(slug: str | None) -> dict[str, str]:
+        base_title = "PolitiGrok — Compare PolitiFact and Grok Fact Checks"
+        base_description = (
+            "PolitiGrok compares PolitiFact claims with Grok-generated analysis, verdicts, "
+            "and evidence summaries in one place."
+        )
+
+        metadata = {
+            "title": base_title,
+            "description": base_description,
+        }
+
+        if not slug:
+            return metadata
+
+        raw_key = f"{prefix}/raw/{slug}"
+        grok_key = f"{prefix}/grok/{slug}"
+        raw_exists = storage.exists(raw_key)
+        grok_exists = storage.exists(grok_key)
+
+        if not raw_exists and not grok_exists:
+            return metadata
+
+        raw_payload = storage.get_json(raw_key) if raw_exists else {}
+        grok_payload = storage.get_json(grok_key) if grok_exists else {}
+
+        claim = raw_payload.get("claim") or grok_payload.get("claim") or raw_payload.get("title")
+        politifact_verdict = raw_payload.get("politifact_verdict")
+        grok_verdict = (grok_payload.get("grok_structured") or {}).get("verdict")
+
+        claim_text = truncate_text(claim, 72) or "Fact Check"
+        title_parts = [claim_text, "PolitiGrok"]
+        metadata["title"] = " | ".join(title_parts)
+
+        description_bits = [f"Compare PolitiFact and Grok on: {truncate_text(claim, 100) or 'this claim'}."]
+        if politifact_verdict:
+            description_bits.append(f"PolitiFact verdict: {politifact_verdict}.")
+        if grok_verdict:
+            description_bits.append(f"Grok verdict: {grok_verdict}.")
+        description_bits.append("View full side-by-side analysis on PolitiGrok.")
+        metadata["description"] = truncate_text(" ".join(description_bits), 160)
+
+        return metadata
 
     def extract_grok_verdict(text: str | None) -> str | None:
         if not text:
@@ -100,7 +153,20 @@ def create_app(
 
     @app.route("/")
     def index():
-        return render_template("index.html")
+        slug = (request.args.get("slug", "") or "").strip()
+        metadata = build_fact_metadata(slug)
+        canonical_url = request.base_url
+        og_image_url = f"{request.url_root.rstrip('/')}{url_for('static', filename='og-default.svg')}"
+        if slug:
+            canonical_url = f"{canonical_url}?slug={quote_plus(slug)}"
+
+        return render_template(
+            "index.html",
+            page_title=metadata["title"],
+            page_description=metadata["description"],
+            canonical_url=canonical_url,
+            og_image_url=og_image_url,
+        )
 
     @app.route("/api/fact-checks")
     def fact_checks():

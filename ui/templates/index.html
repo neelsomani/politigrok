@@ -3,13 +3,31 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PolitiFact vs Grok</title>
+    <title>{{ page_title }}</title>
+    <meta name="description" content="{{ page_description }}" />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="PolitiGrok" />
+    <meta property="og:title" content="{{ page_title }}" />
+    <meta property="og:description" content="{{ page_description }}" />
+    <meta property="og:url" content="{{ canonical_url }}" />
+    <meta property="og:image" content="{{ og_image_url }}" />
+    <meta property="og:image:alt" content="PolitiGrok social preview card" />
+    <meta property="og:image:type" content="image/svg+xml" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ page_title }}" />
+    <meta name="twitter:description" content="{{ page_description }}" />
+    <meta name="twitter:image" content="{{ og_image_url }}" />
+    <meta name="twitter:image:alt" content="PolitiGrok social preview card" />
+    <link rel="canonical" href="{{ canonical_url }}" />
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
   </head>
   <body>
     <header>
       <div class="header-top">
-        <h1>PolitiFact vs Grok Fact Checks</h1>
+        <h1>PolitiGrok Fact Checks</h1>
         <a
           class="github-link"
           href="https://github.com/neelsomani/politigrok"

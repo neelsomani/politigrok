@@ -13,6 +13,10 @@ let hasMore = false;
 let currentQuery = "";
 let currentSlug = "";
 
+const defaultTitle = "PolitiGrok — Compare PolitiFact and Grok Fact Checks";
+const defaultDescription =
+  "PolitiGrok compares PolitiFact claims with Grok-generated analysis, verdicts, and evidence summaries in one place.";
+
 function toText(value) {
   if (!value) return "";
   return String(value);
@@ -22,6 +26,48 @@ function setTextSafe(root, selector, value) {
   const node = root.querySelector(selector);
   if (!node) return;
   node.textContent = value;
+}
+
+function truncateText(value, maxLength) {
+  const normalized = toText(value).replace(/\s+/g, " ").trim();
+  if (!normalized) return "";
+  if (normalized.length <= maxLength) return normalized;
+  return `${normalized.slice(0, maxLength - 1).trim()}…`;
+}
+
+function setMetaContent(selector, content) {
+  const node = document.querySelector(selector);
+  if (node) {
+    node.setAttribute("content", content);
+  }
+}
+
+function updatePageMetadata(rows) {
+  let title = defaultTitle;
+  let description = defaultDescription;
+
+  if (currentSlug && rows.length) {
+    const row = rows[0];
+    const claim = truncateText(row.claim || row.title || "Fact Check", 72);
+    title = `${claim} | PolitiGrok`;
+
+    const parts = [`Compare PolitiFact and Grok on: ${truncateText(row.claim || row.title, 100) || "this claim"}.`];
+    if (row.politifact_verdict) {
+      parts.push(`PolitiFact verdict: ${row.politifact_verdict}.`);
+    }
+    if (row.grok_verdict) {
+      parts.push(`Grok verdict: ${row.grok_verdict}.`);
+    }
+    parts.push("View full side-by-side analysis on PolitiGrok.");
+    description = truncateText(parts.join(" "), 160);
+  }
+
+  document.title = title;
+  setMetaContent('meta[name="description"]', description);
+  setMetaContent('meta[property="og:title"]', title);
+  setMetaContent('meta[property="og:description"]', description);
+  setMetaContent('meta[name="twitter:title"]', title);
+  setMetaContent('meta[name="twitter:description"]', description);
 }
 
 function render(rows) {
@@ -103,6 +149,7 @@ function render(rows) {
 
 function applyFilter() {
   render(allRows);
+  updatePageMetadata(allRows);
   updateLoadMoreVisibility();
 }
 
